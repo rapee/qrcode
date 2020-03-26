@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Usage: npm start <INPUT>
 #
 # For example:
@@ -7,12 +9,24 @@
 # containing "URL, ID or Text"
 # Output QR codes are available at out/*.png
 
+# Config
 OUTPUT_DIR=out
 CSV_IN=$1
 CSV_OUT="${OUTPUT_DIR}/list.csv"
 GENERATOR_PATH="${OUTPUT_DIR}/generator.sh"
 
-# Clean
+# Valdidate command
+FILE=/etc/resolv.conf
+if [ -f "$CSV_IN" ]; then
+  : # noop
+else
+  echo "Input file does not exist."
+  echo ""
+  echo "Usage: npm start <INPUT>"
+  exit 0
+fi
+
+# Clean up
 rm -rf $OUTPUT_DIR
 mkdir -p $OUTPUT_DIR
 
@@ -22,6 +36,7 @@ echo "id,code,image" > "$CSV_OUT"
 echo "QR text input: ${CSV_IN}"
 chmod +x $GENERATOR_PATH
 
+# Create generator script
 count=0
 while IFS="" read -r p|| [ -n "$p" ]
 do
@@ -31,9 +46,11 @@ do
   printf "%s,%s,%s\n" $count $QRCODE "qr_${count}.png" >> "$CSV_OUT"
 done < "$CSV_IN"
 
-# Generate QR Code
+# Run generator script to create QR codes
 echo "Preparing ${count} QR codes..."
-$GENERATOR_PATH
+bash $GENERATOR_PATH
+
+# Print result
 echo ""
 echo "Total ${count} QR codes generated."
 echo "- Image files: ${PWD}/${OUTPUT_DIR}/*.png"
