@@ -2,16 +2,16 @@
 
 ## Prepare CSV file
 
-What you'll only need is a CSV file, with each line containing what you want to encode in QR code:
+What you'll only need is a CSV file, with each line containing what you want to encode in QR code. It can be one of:
 
 - URL (to open a web page or specific app)
 - Number (e.g. Starbucks codes)
 - Text
 
 For example, if you want to create QR codes for StarBucks voucher,
-you might create Excel file with following rows, then **File > Export > CSV**
+you might create Excel file with following rows. Note that it should contain only on column and no header row. Then, **File > Export > CSV**
 
-File: **sample.csv**
+Sample file: **qrcode_input.csv**
 
 ```csv
 8838124817261582
@@ -22,15 +22,21 @@ File: **sample.csv**
 8838124817315639
 ```
 
-## Run on OSX
+## How to create QR codes
 
-1. Prepare CSV file. Put it inside **Documents** directory and rename it as `qrcode_input.csv`.
-2. Open **Terminal** app.
-3. Enter these and press **ENTER**.
+### macOS
+
+1. Download and [install Node.js](https://nodejs.org/en/download/). Choose **macOS Installer (.pkg) 64-bit**. Double click to install. You can skip this if you already have Node.js installed.
+2. [Prepare CSV file](#Prepare%20CSV%20file) and put it inside **Downloads** directory. Rename it to `qrcode_input.csv`.
+3. Open **Terminal** app. See this image for guidance.
+
+   ![How to open Terminal on macOS](https://raw.githubusercontent.com/rapee/qrcode/master/images/macos_howto.png)
+
+4. Copy and paste this in side **Terminal** app, then press **ENTER**.
 
    ```bash
-   cd ~/Documents
+   cd ~/Downloads
    curl -L https://raw.githubusercontent.com/rapee/qrcode/master/run.sh | bash -s qrcode_input.csv
    ```
 
-4. QR code PNG images will be created inside `out/` directory. Plus, you can see what code is inside each QR code by open `out/list.csv` file.
+5. QR code PNG images will be created inside **Downloads/out** directory. You can see what data is inside QR codes from `Downloads/out/list.csv` file.
