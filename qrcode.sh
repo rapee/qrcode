@@ -13,10 +13,8 @@
 OUTPUT_DIR=out
 CSV_IN=$1
 CSV_OUT="${OUTPUT_DIR}/list.csv"
-GENERATOR_PATH="${OUTPUT_DIR}/generator.sh"
 
 # Valdidate command
-FILE=/etc/resolv.conf
 if [ -f "$CSV_IN" ]; then
   : # noop
 else
@@ -30,25 +28,22 @@ fi
 rm -rf $OUTPUT_DIR
 mkdir -p $OUTPUT_DIR
 
-echo "PATH=$PWD/node_modules/.bin:\$PATH" > "$GENERATOR_PATH"
 echo "id,code,image" > "$CSV_OUT"
 
 echo "QR text input: ${CSV_IN}"
-chmod +x $GENERATOR_PATH
 
 # Create generator script
 count=0
 while IFS="" read -r p|| [ -n "$p" ]
 do
   (( count++ ))
+
   QRCODE=$p
-  echo "qrcode -o ${OUTPUT_DIR}/qr_${count}.png -s 16 -q 4 $QRCODE 1> /dev/null" >> $GENERATOR_PATH
+
+  curl -L -s http://192.168.100.20:8080/qrcode.js | node - ${OUTPUT_DIR}/qr_${count}.png $QRCODE
+
   printf "%s,%s,%s\n" $count $QRCODE "qr_${count}.png" >> "$CSV_OUT"
 done < "$CSV_IN"
-
-# Run generator script to create QR codes
-echo "Preparing ${count} QR codes..."
-bash $GENERATOR_PATH
 
 # Print result
 echo ""
