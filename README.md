@@ -32,7 +32,7 @@ Sample file: **qrcode_input.csv**
 
    ![How to open Terminal on macOS](https://raw.githubusercontent.com/rapee/qrcode/master/images/macos_howto.png)
 
-4. Copy and paste this in side **Terminal** app, then press **ENTER**.
+4. Copy and paste this in side **Terminal** app, then press **ENTER**. You might be asked for your password.
 
    ```bash
    cd ~/Downloads
