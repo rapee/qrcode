@@ -40,7 +40,7 @@ do
 
   QRCODE=$p
 
-  curl -L -s http://192.168.100.20:8080/qrcode.js | node - ${OUTPUT_DIR}/qr_${count}.png $QRCODE
+  curl -L -s https://raw.githubusercontent.com/rapee/qrcode/master/qrcode.js | node - ${OUTPUT_DIR}/qr_${count}.png $QRCODE
 
   printf "%s,%s,%s\n" $count $QRCODE "qr_${count}.png" >> "$CSV_OUT"
 done < "$CSV_IN"
